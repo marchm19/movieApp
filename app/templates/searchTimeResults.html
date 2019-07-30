@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="/static/style.css" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Cabin|Varela+Round&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    </head>
+    <body>
+        <nav>
+        <div class="nav-wrapper blue darken-4">
+          <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
+          <ul class="right hide-on-med-and-down">
+                <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+                <li><a href="/userfav">User Favorites</a></li>
+          </ul>
+        </div>
+      </nav>
+        <ul class="collection">
+            <li class="collection-header"><h4>Here are movies under {{hours}} hours and {{minn}} minutes:</h4></li>
+            {% for movie in searchList %}
+                <div class="card horizontal">
+                  <div class="card-image">
+                    <img src="https://image.tmdb.org/t/p/w92/{{movie.poster_path}}">
+                  </div>
+                  <div class="card-stacked">
+                    <div class="card-action">
+                      <a href="/results/{{movie['id']}}">{{movie['title']}} ({{movie['release_date'][0:4]}})</a>
+                      <p>{{movie['overview']}}</p>
+                    </div>
+                  </div>
+                </div>
+            {% endfor %}
+        </ul>
+    </body>
+</html>

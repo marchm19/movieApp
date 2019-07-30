@@ -1,13 +1,87 @@
 <html>
     <head>
-        <title>Welcome!</title>
+        <link rel="stylesheet" href="/static/style.css" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Cabin|Varela+Round&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+        <title>FinTech App</title>
+        <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg"/>
     </head>
     <body>
-        <h1>Hello world!</h1>
-        <p>We can build a full webpage here</p>
-        <form>
-            <input type="text" name="nickname" value="Enter your nickname"/>
-            <input type="submit" value="Submit"/>
-        </form>
+      <nav>
+        <div class="nav-wrapper blue darken-4">
+          <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
+          <ul class="right hide-on-med-and-down">
+                <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+                <li><a href="/userfav">User Favorites</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+        <div class="row"></div>
+        <div class="row">
+          <div class="col s6">
+        <form method='post' action='/search' class="col s12">
+          <div class="row">
+            <div class="input-field col s6 right">
+              <i class="material-icons prefix">search</i>
+              <input name = 'movieName' id="icon_prefix" type="text" class="validate">
+              <label for="icon_prefix">Search for a movie...</label>
+            </div>
+            </div>
+          </form>
+          </div>
+           
+          <div class="col s6">
+            <div class="row"></div>
+              <div>
+              <button class="btn waves-effect waves-light blue darken-4" type="submit" >Search
+                <i class="material-icons left">send</i>
+            </button>
+            </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="row">
+              <div class="col s6">
+              <ul class="collection">
+                 <li class="collection-header"><h4>Critically Acclaimed</h4></li>
+                {% for movie in upcomingMovies %}
+                  <div class="card horizontal">
+                    <div class="card-image">
+                      <img src="https://image.tmdb.org/t/p/w92/{{movie.poster_path}}">
+                    </div>
+                    <div class="card-stacked">
+                      <div class="card-action">
+                        <a href="/results/{{movie['id']}}">{{movie['title']}} ({{movie.release_date[0:4]}})</a>
+                        <p>{{movie['overview']}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </ul>
+            </div>
+              <div class="col s6">
+              <ul class="collection">
+                 <li class="collection-header"><h4>Now Playing</h4></li>
+                {% for movie in popMovies %}
+                  <div class="card horizontal">
+                    <div class="card-image">
+                      <img src="https://image.tmdb.org/t/p/w92/{{movie.poster_path}}">
+                    </div>
+                    <div class="card-stacked">
+                      <div class="card-action">
+                        <a href="/results/{{movie['id']}}">{{movie['title']}} ({{movie.release_date[0:4]}})</a>
+                        <p>{{movie['overview']}}</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </ul>
+            </div>
+           </div>
+        </div>
     </body>
 </html>
