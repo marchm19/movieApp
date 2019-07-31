@@ -1,9 +1,9 @@
-from tmdbv3api import TMDb
+# from tmdbv3api import TMDb
 import requests
-tmdb = TMDb()
-tmdb.api_key = 'd7f3201b6c7960f747f412e7c08d8993'
+# tmdb = TMDb()
+# tmdb.api_key = 'd7f3201b6c7960f747f412e7c08d8993'
 
-from tmdbv3api import Movie, Discover
+# from tmdbv3api import Movie, Discover
 
 movie = Movie()
 
