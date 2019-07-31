@@ -101,8 +101,8 @@ def calcTime():
             hours = 0
         totalTime=60*int(hours) + int(minn)
         searchList = model.findMovieTimeRecs(totalTime)
-        elif(hours=="1"):
+        if(hours=="1"):
             hoursName="hour"
-        elif(minn=="1"):
+        if(minn=="1"):
             minName="minute"
             return render_template('searchTimeResults.html', searchList = searchList , hours=hours, minn=minn,hoursName=hoursName,minName=minName )
