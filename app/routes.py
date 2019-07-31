@@ -56,11 +56,12 @@ def timeRec():
     return render_template('timeRec.html')
 
  
-@app.route('/addMovie',methods=['GET',"POST"])
+@app.route('/addMovie', methods=['GET',"POST"])
 def addMovie():
     formData = dict(request.form)
     movieName=formData["movie-name"]
     name = formData["name"]
+    favID=model.userSearch(movieName)[0]["id"]
     if request.method=='GET':
         return "You haven't submitted the favorite movie form. Please go back and fill out the form"
     else:
@@ -68,7 +69,7 @@ def addMovie():
             return "You haven't filled out the whole favorite movie form. Please go back and fill out the form"
         else:
             collection=mongo.db.favMovies
-            collection.insert({"movie-name":movieName,"name":name})
+            collection.insert({"movie-name":movieName,"name":name,"id":favID})
             return render_template("addedPage.html")
 
 @app.route('/findTheaters',methods=['GET',"POST"])
@@ -100,8 +101,8 @@ def calcTime():
             hours = 0
         totalTime=60*int(hours) + int(minn)
         searchList = model.findMovieTimeRecs(totalTime)
-        if(hours=="1"):
+        elif(hours=="1"):
             hoursName="hour"
-        if(minn=="1"):
+        elif(minn=="1"):
             minName="minute"
-        return render_template('searchTimeResults.html', searchList = searchList , hours=hours, minn=minn,hoursName=hoursName,minName=minName )
+            return render_template('searchTimeResults.html', searchList = searchList , hours=hours, minn=minn,hoursName=hoursName,minName=minName )

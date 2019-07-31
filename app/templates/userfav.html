@@ -44,6 +44,9 @@
                   <li>{{movie["name"]}} recommends "{{ movie["movie-name"]}}"</li>
                 </p>
               </div>
+                <div class="card-action">
+                <a href="/results/{{movie['id']}}">CHECK IT OUT!</a>
+                </div>
             </div>
             {% endfor %}
           </div>
