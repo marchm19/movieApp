@@ -5,7 +5,7 @@ import requests
 
 # from tmdbv3api import Movie, Discover
 
-movie = Movie()
+# movie = Movie()
 
 # jackReacher = requests.get("https://api.themoviedb.org/3/search/movie?api_key=d7f3201b6c7960f747f412e7c08d8993&query=avengers")
 # print(jackReacher.json()['results'])
