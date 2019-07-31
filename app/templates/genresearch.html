@@ -8,32 +8,30 @@
         <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg"/>
     </head>
     <body>
-        <nav>
-            <div class="nav-wrapper blue darken-4">
-                <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
-                <ul class="right hide-on-med-and-down">
-                    <li><a href="/findTheaters">Find Theaters Near You</a></li>
-                    <li><a href="/userfav">User Favorites</a></li>
-                </ul>
-                <ul class="left hide-on-med-and-down">
-                   <li><a href="/timeRec">What Movie Should I Watch?</a></li>
-                </ul>
-                
-            </div>
-        </nav>
-        <div class="container">
+      <nav>
+          <div class="nav-wrapper blue darken-4">
+              <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
+              <ul class="right hide-on-med-and-down">
+                  <li><a href="/findTheaters">Find Theaters Near You</a></li>
+                  <li><a href="/userfav">User Favorites</a></li>
+              </ul>
+              <ul class="left hide-on-med-and-down">
+                 <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+              </ul>
+              
+          </div>
+      </nav>
+      <div class="container">
         <ul class="collection">
-            <li class="collection-header"><h4>Search Results</h4></li>
-            {% for movie in searchList %}
+            <li class="collection-header"><h4>{{genreName}} Movies</h4></li>
+            {% for movie in discoverList %}
                 <div class="card horizontal">
-                  {% if movie.poster_path %}
                   <div class="card-image">
                     <img src="https://image.tmdb.org/t/p/w92/{{movie.poster_path}}">
                   </div>
-                  {% endif %}
                   <div class="card-stacked">
                     <div class="card-action">
-                      <a href="/results/{{movie['id']}}">{{movie['title']}} {% if movie.release_date %}({{movie.release_date[0:4]}}){% endif%}</a>
+                      <a href="/results/{{movie['id']}}">{{movie['title']}} ({{movie['release_date'][0:4]}})</a>
                       <p>{{movie['overview']}}</p>
                     </div>
                   </div>

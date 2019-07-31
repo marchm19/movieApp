@@ -1,95 +1,113 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="/static/style.css" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Cabin|Varela+Round&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    </head>
-    <body>
-        <nav>
+
+<head>
+    <link rel="stylesheet" href="/static/style.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Cabin|Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg"/>
+</head>
+
+<body>
+    <nav>
         <div class="nav-wrapper blue darken-4">
-          <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
-          <ul class="right hide-on-med-and-down">
-                <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+            <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/findTheaters">Find Theaters Near You</a></li>
                 <li><a href="/userfav">User Favorites</a></li>
-          </ul>
+            </ul>
+            <ul class="left hide-on-med-and-down">
+               <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+            </ul>
+            
         </div>
-      </nav>
-      <div class="container">
-          <div class="row">
-              <h1 class="center-align">{{movie.title}}</h1>
-              <h4 class="center-align">{{movie.tagline}}</h4>
-          </div>
-          <div class="row">
-              <div class="col s4">
-                <img class="responsive-img" src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}"></img>      
-              </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <h1 class="center-align">{{movie.title}}</h1>
+            <h4 class="center-align">{{movie.tagline}}</h4>
+        </div>
+        <div class="row">
+            <div class="col s4">
+                <img class="responsive-img" src="https://image.tmdb.org/t/p/w500/{{movie.poster_path}}"></img>
+            </div>
             <div class="col s8">
-                <h5>Release date: {{movie.release_date}}</h5>
+                <h5>Release date: {{movie.release_date[5:7]}}/{{movie.release_date[8:10]}}/{{movie.release_date[0:4]}}</h5>
                 <h6>Runtime: {{movie.runtime}} minutes</h6>
                 <p>{{movie.overview}}</p>
                 <div class="row">
-                    {% for genre in movie.genres %} 
+                    {% for genre in movie.genres %}
                     <div class="chip">
-                    {{genre.name}}
+                        <a href="/genresearch/{{genre.name}}/{{genre.id}}">{{genre.name}}</a>
                     </div>
                     {% endfor %}
                 </div>
             </div>
-          </div>
-        {% if movie.videos.results[0] and movie.videos.results[0].site=='YouTube' %} <br>
-        <iframe width="420" height="315" allowfullscreen src="https://www.youtube.com/embed/{{movie.videos.results[0].key}}"></iframe>
-        {% endif %}
+        </div>
+        <div class="row">
+            {% if movie.videos.results[0] and movie.videos.results[0].site=='YouTube' %} <br>
+            <h3>Trailer</h3>
+            <div class="video-container">
+                <iframe width="420" height="315" allowfullscreen src="https://www.youtube.com/embed/{{movie.videos.results[0].key}}"></iframe>
+            </div>
+            {% endif %}
+        </div>
         <div class="row">
             <h2>Cast</h2>
             {% for castMem in cast %}
-                <div class="col s2">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="https://image.tmdb.org/t/p/original/{{castMem.profile_path}}"></img>
-                        </div>
-                        <div class="card-content">
+            <div class="col s2">
+                <div class="card">
+                    {% if castMem.profile_path %}
+                    <div class="card-image">
+                        <img src="https://image.tmdb.org/t/p/original/{{castMem.profile_path}}"></img>
+                    </div>
+                    {% endif %}
+                    <div class="card-content">
+                        <a href="https://imdb.com/name/{{castMem.personInfo.imdb_id}}">
                             <h6>{{castMem.name}}</h6>
-                            <p>{{castMem.character}}</p>
-                        </div>
+                        </a>
+                        <p>{{castMem.character}}</p>
                     </div>
                 </div>
-                {% endfor %}
+            </div>
+            {% endfor %}
         </div>
         <div class="row">
             <h2>Crew</h2>
             {% for crewMem in crew %}
-                <div class="col s2">
-                    <div class="card">
-                        <div class="card-content">
+            <div class="col s2">
+                <div class="card">
+                    <div class="card-content">
+                        <a href="https://www.imdb.com/name/{{crewMem.personInfo.imdb_id}}">
                             <h6>{{crewMem.name}}</h6>
-                            <p>{{crewMem.job}}</p>
-                        </div>
+                        </a>
+                        <p>{{crewMem.job}}</p>
                     </div>
                 </div>
-                {% endfor %}
+            </div>
+            {% endfor %}
         </div>
-        </div>
-        <div class='container'>
-            <div class='row'>
-                {% if similarMovies %}
-                <h2>Related Movies</h2>
-                {%endif%}
-                {% for simMovie in similarMovies %}
-                <div class="col s2">
-                    <div class="card">
-                        <div class="card-image">
-                            <img src="https://image.tmdb.org/t/p/original/{{simMovie.poster_path}}"></img>
-                        </div>
-                     <div class="card-action">
-                      <a href="/results/{{simMovie['id']}}">{{simMovie['title']}} ({{simMovie['release_date'][0:4]}})</a>
+    </div>
+    <div class='container'>
+        <div class='row'>
+            {% if similarMovies %}
+            <h2>Related Movies</h2>
+            {%endif%} {% for simMovie in similarMovies %}
+            <div class="col s2">
+                <div class="card">
+                    <div class="card-image">
+                        <img src="https://image.tmdb.org/t/p/original/{{simMovie.poster_path}}"></img>
+                    </div>
+                    <div class="card-action">
+                        <a href="/results/{{simMovie['id']}}">{{simMovie['title']}} ({{simMovie['release_date'][0:4]}})</a>
 
                     </div>
-                    </div>
                 </div>
-                {% endfor %}
             </div>
+            {% endfor %}
         </div>
-    </body>
+    </div>
+</body>
+
 </html>

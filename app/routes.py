@@ -12,10 +12,19 @@ def index():
 
 @app.route('/search',methods=['GET','POST'])
 def search():
-    searchList = model.userSearch(dict(request.form)['movieName'])
-    if(len(searchList)==0):
-        return render_template("noresults.html", searchList=searchList)
-    return render_template("search.html", searchList=searchList)
+    try:
+        movieName=dict(request.form)['movieName']
+        searchList = model.userSearch(movieName)
+        if(len(searchList)==0):
+            return render_template("noresults.html", searchList=searchList)
+        return render_template("search.html", searchList=searchList)
+    except:
+        return render_template("noresults.html",searchList=[])
+    
+@app.route('/genresearch/<genreName>/<genreID>',methods=['GET','POST'])
+def genresearch(genreName,genreID):
+    discoverList = model.genreDiscover(genreID)
+    return render_template("genresearch.html",discoverList=discoverList,genreName=genreName)
 
 @app.route('/results/<movieID>', methods=['GET','POST'])
 def results(movieID):
@@ -56,22 +65,43 @@ def addMovie():
         return "You haven't submitted the favorite movie form. Please go back and fill out the form"
     else:
         if movieName == "" or name == "":
-            return "You haven't submitted the favorite movie form. Please go back and fill out the form"
+            return "You haven't filled out the whole favorite movie form. Please go back and fill out the form"
         else:
             collection=mongo.db.favMovies
             collection.insert({"movie-name":movieName,"name":name})
-            return "Your favorite Movie has been added"
-        
-        
+            return render_template("addedPage.html")
+
+@app.route('/findTheaters',methods=['GET',"POST"])
+def findTheaters():
+    return render_template("findTheaters.html")
+
+@app.route('/calcNearby',methods=['GET',"POST"])
+def calcNearby():
+    formData = dict(request.form)
+    address=formData["address"]
+    lat=model.findLatitude(address)
+    longi=model.findLongitude(address)
+    thea=model.findTheaters(lat,longi)
+    return render_template("printTheaters.html",thea=thea,address=address)  
+
 @app.route('/calcTime',methods=['GET',"POST"])
 def calcTime():
     formData = dict(request.form)
     hours=formData["hours"]
     minn = formData["minn"]
-    if (minn=="" and hours==""):
+    if request.method=='GET':
         return "You haven't submitted the time form. Please go back and fill it out."
     else:
+        hoursName="hours"
+        minName="minutes"
+        if (minn==""):
+            minn = 0
+        if (hours==""):
+            hours = 0
         totalTime=60*int(hours) + int(minn)
         searchList = model.findMovieTimeRecs(totalTime)
-        return render_template('searchTimeResults.html', searchList = searchList , hours=hours, minn=minn )
-    
+        if(hours=="1"):
+            hoursName="hour"
+        if(minn=="1"):
+            minName="minute"
+        return render_template('searchTimeResults.html', searchList = searchList , hours=hours, minn=minn,hoursName=hoursName,minName=minName )

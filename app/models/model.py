@@ -13,7 +13,6 @@ movie = Movie()
 #print(jackReacherID.json())
 
 def userSearch(movieName):
-    search=[]
     # print(len(movie.search(movieName)))
     
     # for i in range(0,min(len(movie.search(movieName)),5)):
@@ -24,7 +23,7 @@ def userSearch(movieName):
     #return movie.search(movieName)[0:5]
     
 def searchResult(movieID):
-    result = requests.get("https://api.themoviedb.org/3/movie/"+str(movieID)+"?api_key=d7f3201b6c7960f747f412e7c08d8993&append_to_response=videos,credits").json()
+    result = requests.get("https://api.themoviedb.org/3/movie/"+str(movieID)+"?api_key=d7f3201b6c7960f747f412e7c08d8993&append_to_response=videos,credits,reviews").json()
     return result
 
 #print(searchResult(420818)['credits'])
@@ -58,49 +57,38 @@ def getSimilarMovie(movieID):
 #print(getSimilarMovie(19404))
 
 def getCast(movieID):
-    cast = searchResult(movieID)['credits']['cast']
-    return cast[0:6]
+    cast = []
+    for mem in searchResult(movieID)['credits']['cast'][0:6]:
+        mem['personInfo']=requests.get("https://api.themoviedb.org/3/person/"+str(mem['id'])+"?api_key=d7f3201b6c7960f747f412e7c08d8993").json()
+        cast.append(mem)
+    return cast
+
     
 def getCrew(movieID):
-    crew = searchResult(movieID)['credits']['crew']
-    return crew[0:6]
-    
-    
-import hashlib
-import time
+    crew = []
+    for mem in searchResult(movieID)['credits']['crew'][0:6]:
+        mem['personInfo']=requests.get("https://api.themoviedb.org/3/person/"+str(mem['id'])+"?api_key=d7f3201b6c7960f747f412e7c08d8993").json()
+        crew.append(mem)
+    return crew
 
-def Sha256Encode(stringToEncode):
-    s = hashlib.sha256();
-    s.update(stringToEncode.encode('utf-8'))
-    result = s.hexdigest()
-    return result
+def genreDiscover(genreID):
+    discoverList = requests.get("https://api.themoviedb.org/3/discover/movie?api_key=d7f3201b6c7960f747f412e7c08d8993&with_genres="+str(genreID)).json()
+    return discoverList['results']
 
-def intlShowtimesapi():
-    response = requests.get("https://api.internationalshowtimes.com/v4/movies?apikey=O7adMPVLBzHIbhlmVpocOSXy8x7qUdLM&search_query=Avengers: Endgame&search_field=title")
-intlShowtimesapi()
-
-apikeysig = "apikey=egucb4e8bfrn4pv3guj4ktqn&sig="+Sha256Encode("egucb4e8bfrn4pv3guj4ktqnWQfu6MRysT"+str(int(time.time())))
-print(apikeysig)
-print(requests.get("http://api.fandango.com/v3?theatersbypostalcodesearch&postalcode=07073&"+apikeysig))
-# from tmdb3 import set_key,searchMovie, Movie
-# set_key('d7f3201b6c7960f747f412e7c08d8993')
-
-# def userSearch(movieName):
-#     search = []
-#     res = searchMovie(movieName)
-#     for i in range(0, min(len(res),5)):
-#         search.append(res)
-#     # if len(search) > 0:    
-#     return search
-#     # else:
-#     #     return "Your search did not return any results"
-    
-# def searchResult(movieName):
-#     return searchMovie(movieName)[0]
-    
-# def printPop():
-#     popMovies = Movie.mostpopular()[0:10]
-    # return popMovies
-    # 
-    
-# print(requests.get("http://api.fandango.com/v3/?op=performancesbymoviepostalcodesearch&postalcode=07073&api_key=egucb4e8bfrn4pv3guj4ktqn&sig=WQfu6MRysT")
+from geopy.geocoders import Nominatim
+geolocator = Nominatim(user_agent="FinTech App")
+def findLatitude(address):
+    location = geolocator.geocode(address)
+    latitude=location.latitude
+    return latitude
+def findLongitude(address):
+    location = geolocator.geocode(address)
+    longitude=location.longitude
+    return longitude
+def findTheaters(latitude,longitude):
+    arr=[]
+    theaters = requests.get("https://api.internationalshowtimes.com/v4/cinemas/?apikey=O7adMPVLBzHIbhlmVpocOSXy8x7qUdLM&location="+str(latitude)+","+str(longitude)+"&distance=10").json()
+    return theaters['cinemas']
+    # for i in range(0,10):
+    #     arr.append(theaters["cinemas"][i]["name"])
+    # return str(arr)

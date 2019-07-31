@@ -1,12 +1,14 @@
-/*!
+*{
+   font-family: 'Varela Round', sans-serif;
+ }
+
+input[type="text"] {
+    text-align:center;
+}/*!
  * Materialize v1.0.0 (http://materializecss.com)
  * Copyright 2014-2017 Materialize
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
  */
- 
-*{
-   font-family: 'Varela Round', sans-serif;
- }
 .materialize-red {
   background-color: #e51c23 !important;
 }
@@ -2391,13 +2393,10 @@ textarea {
  * Show the overflow in IE.
  * 1. Show the overflow in Edge.
  */
-
 button,
 input {
   /* 1 */
   overflow: visible;
-  padding-top: 50px; 
-  /*###############################################  BUTTON  #######################################################################*/
 }
 
 /**
@@ -5732,8 +5731,7 @@ body.keyboard-focused .dropdown-content li:focus {
 
 .waves-input-wrapper .waves-button-input {
   position: relative;
-  top: 0;        
-  /* ######################################################################################## */
+  top: 0;
   left: 0;
   z-index: 1;
 }
@@ -6102,7 +6100,6 @@ select:focus {
 button:focus {
   outline: none;
   background-color: #2ab7a9;
-  padding: 5px 0 0 0;
 }
 
 label {
