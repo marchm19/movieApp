@@ -105,4 +105,4 @@ def calcTime():
             hoursName="hour"
         if(minn=="1"):
             minName="minute"
-            return render_template('searchTimeResults.html', searchList = searchList , hours=hours, minn=minn,hoursName=hoursName,minName=minName )
+        return render_template('searchTimeResults.html', searchList = searchList , hours=hours, minn=minn,hoursName=hoursName,minName=minName )
