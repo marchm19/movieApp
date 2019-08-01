@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg" />
+    <title>Invalid Movie</title>
 </head>
 
 <body>
@@ -19,32 +20,16 @@
             </ul>
             <ul class="left hide-on-med-and-down">
                 {% if session['username'] %}
-                <li><a href="/login/logout/calcNearby">Logout</a></li>
+                <li><a href="/login/logout/addMovie">Logout</a></li>
                 {% else %}
-                <li><a href="/login/init/calcNearby">Login/Sign Up</a></li>
+                <li><a href="/login/init/addMovie">Login/Sign Up</a></li>
                 {% endif %}
                 <li><a href="/timeRec">What Movie Should I Watch?</a></li>
             </ul>
 
         </div>
     </nav>
-    <div class="container">
-        <ul class="collection">
-            <li class="collection-header">
-                <h4>Here are theaters near {{address}}...</h4>
-            </li>
-            {% for theater in thea %}
-            <div class="card horizontal">
-                <div class="card-stacked">
-                    <div class="card-action">
-                        <a href={{theater.website}} target="_blank">{{theater.name}}</a>
-                        <p>{{theater.location.address.display_text}}</p>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </ul>
-    </div>
+    <h1 style="text-align: center">Please enter a valid movie.</h1>
 </body>
 
 </html>

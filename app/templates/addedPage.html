@@ -1,27 +1,35 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <link rel="stylesheet" href="/static/style.css" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Cabin|Varela+Round&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg"/>
-        <title>Thank You</title>
-    </head>
-    <body>
-        <nav>
-            <div class="nav-wrapper blue darken-4">
-                <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
-                <ul class="right hide-on-med-and-down">
-                    <li><a href="/findTheaters">Find Theaters Near You</a></li>
-                    <li><a href="/userfav">User Favorites</a></li>
-                </ul>
-                <ul class="left hide-on-med-and-down">
-                   <li><a href="/timeRec">What Movie Should I Watch?</a></li>
-                </ul>
-                
-            </div>
-        </nav>
-      <h1 style="text-align: center;">Thank you for your input!</h1>
-    </body>
+
+<head>
+    <link rel="stylesheet" href="/static/style.css" type="text/css" />
+    <link href="https://fonts.googleapis.com/css?family=Cabin|Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg" />
+    <title>Thank You</title>
+</head>
+
+<body>
+    <nav>
+        <div class="nav-wrapper blue darken-4">
+            <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movify</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/findTheaters">Find Theaters Near You</a></li>
+                <li><a href="/userfav">User Favorites</a></li>
+            </ul>
+            <ul class="left hide-on-med-and-down">
+                {% if session['username'] %}
+                <li><a href="/login/logout/addMovie">Logout</a></li>
+                {% else %}
+                <li><a href="/login/init/addMovie">Login/Sign Up</a></li>
+                {% endif %}
+                <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+            </ul>
+
+        </div>
+    </nav>
+    <h1 style="text-align: center;">Thank you for your input!</h1>
+</body>
+
 </html>

@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Cabin|Varela+Round&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg"/>
+    <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg" />
 </head>
 
 <body>
@@ -18,9 +18,14 @@
                 <li><a href="/userfav">User Favorites</a></li>
             </ul>
             <ul class="left hide-on-med-and-down">
-               <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+                {% if session['username'] %}
+                <li><a href="/login/logout/results/{{movieID}}">Logout</a></li>
+                {% else %}
+                <li><a href="/login/init/results/{{movieID}}">Login/Sign Up</a></li>
+                {% endif %}
+                <li><a href="/timeRec">What Movie Should I Watch?</a></li>
             </ul>
-            
+
         </div>
     </nav>
     <div class="container">
@@ -64,7 +69,7 @@
                     </div>
                     {% endif %}
                     <div class="card-content">
-                        <a href="https://imdb.com/name/{{castMem.personInfo.imdb_id}}">
+                        <a href="https://imdb.com/name/{{castMem.personInfo.imdb_id}}" target="_blank">
                             <h6>{{castMem.name}}</h6>
                         </a>
                         <p>{{castMem.character}}</p>
@@ -79,7 +84,7 @@
             <div class="col s2">
                 <div class="card">
                     <div class="card-content">
-                        <a href="https://www.imdb.com/name/{{crewMem.personInfo.imdb_id}}">
+                        <a href="https://www.imdb.com/name/{{crewMem.personInfo.imdb_id}}" target="_blank">
                             <h6>{{crewMem.name}}</h6>
                         </a>
                         <p>{{crewMem.job}}</p>
