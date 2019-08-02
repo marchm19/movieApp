@@ -64,4 +64,8 @@ def findTheaters(latitude,longitude):
     theaters = requests.get("https://api.internationalshowtimes.com/v4/cinemas/?apikey=O7adMPVLBzHIbhlmVpocOSXy8x7qUdLM&location="+str(latitude)+","+str(longitude)+"&distance=10").json()
     return theaters['cinemas']
 
-
+def getFavoritesList(idArray):
+    favList=[]
+    for ID in idArray:
+        favList.append(searchResult(ID))
+    return favList

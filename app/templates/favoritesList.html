@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <link rel="shortcut icon" type="image/png" href="https://png.pngtree.com/element_our/png/20181213/video-vector-icon-png_267481.jpg" />
-    <title>Results</title>
+    <title>Your Favorites</title>
 </head>
 
 <body>
@@ -20,9 +20,9 @@
             </ul>
             <ul class="left hide-on-med-and-down">
                 {% if session['username'] %}
-                <li><a href="/login/logout/timeRec">Logout</a></li>
+                <li><a href="/login/logout/index">Logout</a></li>
                 {% else %}
-                <li><a href="/login/init/timeRec">Login/Sign Up</a></li>
+                <li><a href="/login/init/index">Login/Sign Up</a></li>
                 {% endif %}
                 <li><a href="/timeRec">What Movie Should I Watch?</a></li>
                 <li><a href="/displayFavorites">Your Favorites</a></li>
@@ -33,16 +33,18 @@
     <div class="container">
         <ul class="collection">
             <li class="collection-header">
-                <h4 style="text-align:center">{{cat}} Movies</h4>
+                <h4 style="text-align:center">Your Favorites</h4>
             </li>
-            {% for movie in moviesInGenre %}
+            {% for movie in favTitlesList %}
             <div class="card horizontal">
+                {% if movie.poster_path %}
                 <div class="card-image">
                     <img src="https://image.tmdb.org/t/p/w92/{{movie.poster_path}}">
                 </div>
+                {% endif %}
                 <div class="card-stacked">
                     <div class="card-action">
-                        <a href="/results/{{movie['id']}}">{{movie['title']}} ({{movie['release_date'][0:4]}})</a>
+                        <a href="/results/{{movie['id']}}">{{movie['title']}} {% if movie.release_date %}({{movie.release_date[0:4]}}){% endif%}</a>
                         <p>{{movie['overview']}}</p>
                     </div>
                 </div>

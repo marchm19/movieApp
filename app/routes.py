@@ -3,6 +3,12 @@ import os
 from flask import render_template, request, redirect, session, url_for, escape
 from app.models import model, formopener
 
+from flask_pymongo import PyMongo
+app.config['MONGO_DBNAME'] = 'goldmansachs' 
+app.config['MONGO_URI'] = 'mongodb+srv://admin:VQCSruWQzJMLdFIE@cluster0-e45ty.mongodb.net/goldmansachs?retryWrites=true&w=majority' 
+
+mongo = PyMongo(app)
+
 
 app.secret_key=b'xa5x88x92x15Rxd4.Ex9dLxb3fxcexd9]'
 @app.route('/')
@@ -30,18 +36,19 @@ def genresearch(genreName,genreID):
 
 @app.route('/results/<movieID>', methods=['GET','POST'])
 def results(movieID):
+    isFavorite=False
+    if 'username' in session:
+        collection=mongo.db.userLogin
+        user = list(collection.find({'username':session['username']}))[0]
+        if movieID in user['favMovieList']:
+            isFavorite=True
+        
     if request.method=='GET':
-        return render_template('results.html',movieID = movieID, movie=model.searchResult(movieID),similarMovies=model.getSimilarMovie(movieID), cast=model.getCast(movieID),crew=model.getCrew(movieID))
+        return render_template('results.html',movieID = movieID, movie=model.searchResult(movieID),similarMovies=model.getSimilarMovie(movieID), cast=model.getCast(movieID),crew=model.getCrew(movieID), isFavorite = isFavorite)
     # else:
     #     return render_template('results.html',movieName=model.userSearch(dict(request.form)['movieName']))
 
 
-
-from flask_pymongo import PyMongo
-app.config['MONGO_DBNAME'] = 'goldmansachs' 
-app.config['MONGO_URI'] = 'mongodb+srv://admin:VQCSruWQzJMLdFIE@cluster0-e45ty.mongodb.net/goldmansachs?retryWrites=true&w=majority' 
-
-mongo = PyMongo(app)
 
 import bcrypt
 
@@ -55,7 +62,10 @@ def login(type, redirectedFrom):
         return render_template('login.html',msg=msg,redirectedFrom=redirectedFrom)
     else:
         collection=mongo.db.userLogin
-        userData = dict(request.form)
+        try:
+            userData = dict(request.form)
+        except:
+            return render_template('noInput.html')
         if type == 'login':
             if list(collection.find({'username':userData['username']})):
                 user = list(collection.find({'username':userData['username']}))[0]
@@ -70,13 +80,13 @@ def login(type, redirectedFrom):
             if list(collection.find({'username':userData['username']})):
                 msg = "That username is already in use"
             else:
-                collection.insert({'username':userData['username'],'password': bcrypt.hashpw(userData['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8')})
+                collection.insert({'username':userData['username'],'password': bcrypt.hashpw(userData['password'].encode('utf-8'),bcrypt.gensalt()).decode('utf-8'), 'favMovieList':[]})
                 session['username']=userData['username']
                 return redirect('/'+redirectedFrom)
         elif type=="logout":
             session.pop('username',None)
             return redirect('/'+redirectedFrom)
-        return render_template('login.html',msg=msg)
+        return render_template('login.html',msg=msg, redirectedFrom=redirectedFrom)
             
         
 @app.route('/userfav')
@@ -131,6 +141,17 @@ def calcNearby():
     except:
         return render_template("noresults.html")
 
+@app.route('/displayFavorites',methods=['GET',"POST"])
+def displayFavorites():
+    if 'username' in session:
+        collection=mongo.db.userLogin
+        user = list(collection.find({'username':session['username']}))[0]
+        idArray=user["favMovieList"]
+        favTitlesList=model.getFavoritesList(idArray)
+        return render_template("favoritesList.html",favTitlesList=favTitlesList)
+    else:
+        return render_template('login.html', msg="You must login first.", redirectedFrom="displayFavorites")
+
 @app.route('/calcTime',methods=['GET',"POST"])
 def calcTime():
     formData = dict(request.form)
@@ -183,9 +204,24 @@ def searchCategory():
         return render_template("noresults.html")
     return render_template('categoryResults.html',moviesInGenre=moviesInGenre,cat=cat.capitalize())        
 
+@app.route('/favorite/<movieID>', methods=['GET','POST'])
+def favorite(movieID):
+    if 'username' in session:
+        collection=mongo.db.userLogin
+        user = list(collection.find({'username':session['username']}))[0]
+        collection.update(user, {"$push":{'favMovieList':movieID}})
+        return redirect('/results/'+movieID)
+        # model.favoriteMovie(session['username'],redirectedFrom[8::])
+    else:
+        return render_template('login.html', msg="You must login first.", redirectedFrom="results/"+movieID)
 
-
-
+@app.route('/unfavorite/<movieID>',methods=['GET','POST'])
+def unfavorite(movieID):
+    if 'username' in session:
+        collection=mongo.db.userLogin
+        user = list(collection.find({'username':session['username']}))[0]
+        collection.update(user, {"$pull":{'favMovieList':movieID}}) 
+        return redirect('/results/'+movieID)
 
 
 

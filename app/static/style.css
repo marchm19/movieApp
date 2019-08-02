@@ -4,7 +4,12 @@
 
 input[type="text"] {
     text-align:center;
-}/*!
+}
+
+input[type="password"] {
+    text-align:center;
+}
+/*!
  * Materialize v1.0.0 (http://materializecss.com)
  * Copyright 2014-2017 Materialize
  * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)

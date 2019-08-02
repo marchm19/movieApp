@@ -16,7 +16,7 @@
       <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movify</a>
       <ul class="right hide-on-med-and-down">
         <li><a href="/findTheaters">Find Theaters Near You</a></li>
-        <li><a href="/userfav">User Favorites</a></li>
+        <li><a href="/userfav">User Recommendations</a></li>
       </ul>
       <ul class="left hide-on-med-and-down">
         {% if session['username'] %}
@@ -25,6 +25,7 @@
         <li><a href="/login/init/userfav">Login/Sign Up</a></li>
         {% endif %}
         <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+        <li><a href="/displayFavorites">Your Favorites</a></li>
       </ul>
 
     </div>

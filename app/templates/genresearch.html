@@ -12,18 +12,19 @@
 <body>
   <nav>
     <div class="nav-wrapper blue darken-4">
-      <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movie App</a>
+      <a href="/" class="brand-logo center"><i class="material-icons">live_tv</i>Movify</a>
       <ul class="right hide-on-med-and-down">
         <li><a href="/findTheaters">Find Theaters Near You</a></li>
-        <li><a href="/userfav">User Favorites</a></li>
+        <li><a href="/userfav">User Recommendations</a></li>
       </ul>
       <ul class="left hide-on-med-and-down">
         {% if session['username'] %}
-        <li><a href="/login/logout/genresearch/{{genreName}}/{{genreID}}">Logout</a></li>
+        <li><a href="/login/logout/index">Logout</a></li>
         {% else %}
-        <li><a href="/login/init/{{genreName}}/{{genreID}}">Login/Sign Up</a></li>
+        <li><a href="/login/init/index">Login/Sign Up</a></li>
         {% endif %}
         <li><a href="/timeRec">What Movie Should I Watch?</a></li>
+        <li><a href="/displayFavorites">Your Favorites</a></li>
       </ul>
 
     </div>
@@ -31,7 +32,7 @@
   <div class="container">
     <ul class="collection">
       <li class="collection-header">
-        <h4 style="text-align:center">{{genreName}} Movies</h4>
+        <h4>{{genreName}} Movies</h4>
       </li>
       {% for movie in discoverList %}
       <div class="card horizontal">
