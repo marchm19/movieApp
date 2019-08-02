@@ -30,22 +30,23 @@
         </div>
     </nav>
     <h3>{{msg}}</h3>
-    <div class="container">
-        <h1>Login</h1>
+    <div class="container text-align: center">
+        <h1>Login:</h1>
         <form method="post" action="/login/login/{{redirectedFrom}}">
             <label for="username">Username</label>
             <input type="text" name="username" />
             <label for="password">Password</label>
             <input type="password" name="password" />
-            <input type="submit" value="Submit" />
+            <button class="btn waves-effect waves-light blue darken-4">Login</button>
+            <!--<input type="submit" value="Submit" />-->
         </form>
-        <h1>Sign Up</h1>
+        <h1>Sign Up:</h1>
         <form method="post" action="/login/signup/{{redirectedFrom}}">
             <label for="username">Username</label>
             <input type="text" name="username" />
             <label for="password">Password</label>
             <input type="password" name="password" />
-            <input type="submit" value="Submit" />
+            <button class="btn waves-effect waves-light blue darken-4">Sign Up</button>
         </form>
     </div>
 </body>
